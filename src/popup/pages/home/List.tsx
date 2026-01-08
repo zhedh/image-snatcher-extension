@@ -6,10 +6,12 @@ import ImageItem from './Item'
 
 interface ImageListProps {
   records: ImageInfo[]
+  selected: Set<string>
+  onSelected: (selected: Set<string>) => void
 }
 
 const ImageList = (props: ImageListProps) => {
-  const { records } = props
+  const { records, selected } = props
 
   if (records.length === 0)
     return (
@@ -20,11 +22,17 @@ const ImageList = (props: ImageListProps) => {
 
   return (
     <Wrapper>
-      {records.map((item) => (<ImageItem key={item.id} image={item} checked={false} onChecked={function (): void {
-        throw new Error('Function not implemented.')
-      } } onDownload={function (image: ImageInfo): void {
-        throw new Error('Function not implemented.')
-      } }></ImageItem>))}
+      {records.map((item) => (
+        <ImageItem
+          key={item.id}
+          image={item}
+          checked={selected.has(item.id)}
+          onChecked={(checked) => {
+            checked ? selected.add(item.id) : selected.delete(item.id)
+            props.onSelected(new Set(selected))
+          }}
+        />
+      ))}
     </Wrapper>
   )
 }

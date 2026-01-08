@@ -1,10 +1,10 @@
-import {  Card, Subtitle, Label, Checkbox, Button } from '../../theme/components'
+import { Subtitle, Label, Checkbox, Button } from '../../theme/components'
 import { ThemeToggleButton } from '../../theme/ThemeToggle'
 
 export default function Setting() {
   return (
     <div>
-      <Card>
+      <div>
         <Subtitle>Extension Settings</Subtitle>
 
         <div>
@@ -30,7 +30,7 @@ export default function Setting() {
         </div>
 
         <Button>Save Settings</Button>
-      </Card>
+      </div>
     </div>
   )
 }

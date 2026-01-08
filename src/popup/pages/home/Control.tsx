@@ -8,6 +8,7 @@ import { useLoading } from '../../../store'
 interface ControlProps {
   total?: number
   onCapture: (settings: ImageSettingType[]) => Promise<boolean | void>
+  onDownload: (settings: ImageSettingType[]) => void
 }
 
 const SETTING_OPTIONS = [
@@ -48,7 +49,13 @@ export default function Control(props: ControlProps) {
           <IconSearch size={16} />
           &nbsp;抓取图片
         </Button>
-        <Button size="xs" fullWidth color={theme.colors.success}>
+        <Button
+          size="xs"
+          fullWidth
+          color={theme.colors.success}
+          loading={!!loading}
+          onClick={() => props.onDownload(settings)}
+        >
           <IconDownload size={16} />
           &nbsp;下载（{props.total || 0}）
         </Button>

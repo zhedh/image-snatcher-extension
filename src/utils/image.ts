@@ -47,6 +47,11 @@ const createImageInfo = (img: HTMLImageElement, resolve: (image: ImageInfo) => v
   })
 }
 
+/**
+ * 获取图片信息
+ * @param img 
+ * @returns 
+ */
 export const getImageInfo = (img: HTMLImageElement): Promise<ImageInfo> => new Promise((resolve, reject) => {
   // 如果图片已经加载完成，直接处理
   if (img.complete && img.naturalWidth > 0) {
@@ -86,5 +91,58 @@ export const getImageInfo = (img: HTMLImageElement): Promise<ImageInfo> => new P
   }, 3000) // 3秒超时
 })
 
+/**
+ * 压缩图片并返回指定格式的data URL
+ *
+ * 通过Canvas API将图片重新编码为指定格式，以实现图片压缩。
+ * 支持跨域图片加载，失败时返回原始URL。
+ *
+ * @param url - 要压缩的图片URL，支持HTTP/HTTPS和data URL
+ * @param quality - 压缩质量，范围0-1，1为最高质量
+ * @param format - 输出图片格式，默认为'jpeg'，可选'png'等
+ * @returns Promise<string> 压缩后的 data URL字符串，格式为"data:image/{format};base64,..."
+ */
+export const compressImage = async (
+  url: string,
+  quality: number,
+  format: string = 'jpeg'
+): Promise<string> => new Promise((resolve) => {
+  const img = new Image()
+  img.crossOrigin = 'anonymous'
+  img.onload = () => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.width = img.naturalWidth
+    canvas.height = img.naturalHeight
 
+    if (ctx) {
+      ctx.drawImage(img, 0, 0)
+    }
 
+    resolve(canvas.toDataURL(`image/${format}`, quality))
+  }
+  img.onerror = () => resolve(url)
+  img.src = url
+})
+
+/**
+ * 从URL中获取图片的扩展名
+ * @param url 
+ * @returns 
+ */
+export const getImageExtension = (url: string): string => {
+  try {
+    // 尝试从URL路径获取扩展名
+    const { pathname } = new URL(url)
+    const extension = pathname
+      .split('.')
+      .pop()
+      ?.toLowerCase()
+
+    // 如果是常见图片格式，返回该格式，否则默认jpg
+    const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']
+    return validExtensions.includes(extension || '') ? extension! : 'jpg'
+  } catch {
+    return 'jpg'
+  }
+}

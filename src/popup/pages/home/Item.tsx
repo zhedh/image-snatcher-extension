@@ -1,29 +1,33 @@
 import styled from 'styled-components'
 import { Checkbox } from '@mantine/core'
 import { ImageInfo } from '../../../types'
+import { downloadFile } from '../../../utils/download'
+import { getImageExtension } from '../../../utils/image'
 
 interface Props {
   checked: boolean
   image: ImageInfo
-  onChecked: () => void
-  onDownload: (image: ImageInfo) => void
+  onChecked: (checked: boolean) => void
 }
 
 const ImageItem = (props: Props) => {
   const { image } = props
+  const title = image.title || image.alt || `图片 ${image.id.slice(-6)}`
+  const handleDownload = () => {
+    const filename = title + '.' + getImageExtension(image.url)
+    downloadFile(image.url, filename)
+  }
 
   return (
     <Wrapper>
       <Checkbox
         size="xs"
         checked={props.checked}
-        onChange={props.onChecked}
-        style={{ marginRight: '12px' }}
-        label={''}
+        onChange={(e) => props.onChecked(e.target.checked)}
       />
       <ImageThumbnail src={image.thumbnail || image.url} alt={image.alt} />
       <ImageBox>
-        <h4>{image.title || image.alt || `图片 ${image.id.slice(-6)}`}</h4>
+        <h4>{title}</h4>
         <small>{image.url}</small>
         <aside>
           <span>
@@ -34,7 +38,7 @@ const ImageItem = (props: Props) => {
       </ImageBox>
       <Actions>
         <button onClick={() => window.open(image.url, '_blank')}>查看</button>
-        <button onClick={() => props.onDownload(image)}>下载</button>
+        <button onClick={handleDownload}>下载</button>
       </Actions>
     </Wrapper>
   )
@@ -61,6 +65,7 @@ const ImageThumbnail = styled.img`
   height: 60px;
   object-fit: cover;
   border-radius: 4px;
+  margin-left: 12px;
   margin-right: 12px;
   border: 1px solid #e9ecef;
 `

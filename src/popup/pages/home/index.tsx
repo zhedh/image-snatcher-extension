@@ -3,13 +3,16 @@ import Control from './Control'
 import ImageList from './List'
 import { useState } from 'react'
 import { getCurrentTab } from '../../../utils/chrome'
-import { useNotification } from '../../../store'
+import { useLoading, useNotification } from '../../../store'
 import { isValidDomain } from '../../../utils/url'
-import { ImageSettingType } from '../../../types'
+import { ImageInfo, ImageSettingType } from '../../../types'
+import { downloadImagesZip } from '../../../utils/download'
 
 export default function Home() {
   const notification = useNotification()
-  const [images, setImages] = useState<[]>([])
+  const [, setLoading] = useLoading()
+  const [images, setImages] = useState<ImageInfo[]>([])
+  const [selected, setSelected] = useState<Set<string>>(new Set())
 
   const handleCapture = async (settings: ImageSettingType[]) => {
     setImages([])
@@ -41,7 +44,7 @@ export default function Home() {
       return
     }
 
-    if(!response.images.length) {
+    if (!response.images.length) {
       notification.error('未找到图片')
       return
     }
@@ -49,11 +52,39 @@ export default function Home() {
     setImages(response.images || [])
   }
 
+  const handleDownload = async (settings: ImageSettingType[]) => {
+    if (!images.length) {
+      notification.error('请先抓取图片')
+      return
+    }
+
+    if (!selected.size) {
+      notification.error('请先选择图片')
+      return
+    }
+
+    setLoading(true)
+    const records = images.filter((item) => selected.has(item.id))
+    const compress = settings.includes(ImageSettingType.COMPRESS)
+    downloadImagesZip(records, {
+      compress,
+      quality: compress ? 0.8 : 1,
+    }).finally(() => setLoading(false))
+  }
+
   return (
     <Wrapper>
-      <Control onCapture={handleCapture}></Control>
+      <Control
+        total={selected.size}
+        onCapture={handleCapture}
+        onDownload={handleDownload}
+      />
 
-      <ImageList records={images}></ImageList>
+      <ImageList
+        records={images}
+        selected={selected}
+        onSelected={setSelected}
+      />
     </Wrapper>
   )
 }
