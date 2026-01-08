@@ -85,6 +85,7 @@ export default function Control(props: ControlProps) {
 
 const Wrapper = styled.section`
   padding: 12px;
+  background-color: #f5f5f5;
 `
 
 const Actions = styled.div`

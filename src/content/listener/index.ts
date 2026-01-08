@@ -16,13 +16,19 @@ export const setup = () => {
     if (request.action === ActionType.CAPTURE) {
       const options = request.payload
 
-      captureImages(options)
+      try {
+        captureImages(options)
         .then((images) => sendResponse({ success: true, images }))
         .catch((error) => {
           console.log('captureImages___error: ', error)
           sendResponse({ success: false, error: error.message })
         })
+      } catch (error) {
+        console.log('获取当前页面的图片-captureImages___error: ', error)
+        sendResponse({ success: false, error: error })
+      }
 
+      
       return true // Keep the message channel open for async response
     }
    

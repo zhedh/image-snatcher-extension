@@ -85,9 +85,10 @@ export const getImageInfo = (img: HTMLImageElement): Promise<ImageInfo> => new P
     if (!img.complete) {
       img.removeEventListener('load', handleLoad)
       img.removeEventListener('error', handleError)
-      // 即使超时也尝试创建信息
-      createImageInfo(img, resolve, reject)
     }
+
+    // 即使超时也尝试创建信息
+    createImageInfo(img, resolve, reject)
   }, 3000) // 3秒超时
 })
 

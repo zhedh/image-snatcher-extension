@@ -1,27 +1,27 @@
-import { Subtitle, Label, Checkbox, Button } from '../../theme/components'
+import { Checkbox } from '@mantine/core'
 import { ThemeToggleButton } from '../../theme/ThemeToggle'
 
 export default function Setting() {
   return (
     <div>
       <div>
-        <Subtitle>Extension Settings</Subtitle>
+        <h3>Extension Settings</h3>
 
         <div>
-          <Label>
+          <label>
             <Checkbox />
             Enable notifications
-          </Label>
+          </label>
 
-          <Label>
+          <label>
             <Checkbox />
             Auto-save settings
-          </Label>
+          </label>
 
-          <Label>
+          <label>
             <Checkbox />
             Enable advanced features
-          </Label>
+          </label>
         </div>
 
         <div style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -29,7 +29,7 @@ export default function Setting() {
           <ThemeToggleButton />
         </div>
 
-        <Button>Save Settings</Button>
+        <button>Save Settings</button>
       </div>
     </div>
   )

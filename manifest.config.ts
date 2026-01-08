@@ -11,6 +11,9 @@ export default defineManifest({
     48: "public/icons/icon-48.png",
     128: "public/icons/icon-128.png"
   },
+  background: {
+    service_worker: 'src/background.ts',
+  },
   action: {
     default_icon: {
       48: "public/icons/icon-48.png",

@@ -19,6 +19,7 @@ const captureTagImages = async (maxImages = MAX_IMAGES, minSize = MIN_SIZE) => {
         images.push(imageInfo)
       }
     } catch (error) {
+      console.log('captureTagImages___error=================')
       console.warn('Failed to capture tag image:', error)
     }
   }
@@ -112,7 +113,6 @@ export const captureImages = async (options: {
     const tagImages = await captureTagImages(options.maxImages, options.minSize)
     tagImages.forEach((image: ImageInfo) => addImageIfUnique(image))
   }
-
 
   // Capture CSS background images
   if (options.settings.includes(ImageSettingType.CSS)) {
