@@ -102,7 +102,7 @@ npm run build
 ### 开发环境设置
 
 1. Fork 本项目
-2. 克隆到本地: `git clone https://github.com/your-username/image-snatcher.git`
+2. 克隆到本地: `git clone https://github.com/zhedh/image-snatcher-extension.git`
 3. 安装依赖: `npm install`
 4. 创建功能分支: `git checkout -b feature/new-feature`
 5. 提交更改: `git commit -am 'Add new feature'`
@@ -138,9 +138,9 @@ A: 插件会自动过滤无效或重复的图片，确保下载的图片完整�
 
 ## 📞 联系我们
 
-- 项目主页: [GitHub Repository](https://github.com/your-username/image-snatcher)
-- 问题反馈: [Issues](https://github.com/your-username/image-snatcher/issues)
-- 功能请求: [Discussions](https://github.com/your-username/image-snatcher/discussions)
+- 项目主页: [GitHub Repository](https://github.com/zhedh/image-snatcher-extension)
+- 问题反馈: [Issues](https://github.com/zhedh/image-snatcher-extension/issues)
+- 功能请求: [Discussions](https://github.com/zhedh/image-snatcher-extension/discussions)
 
 ---
 
