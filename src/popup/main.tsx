@@ -4,7 +4,6 @@ import { ThemeProvider } from '../theme/ThemeContext'
 import { MantineProvider } from '@mantine/core'
 import App from './App.tsx'
 import '@mantine/core/styles.css'
-import '@mantine/notifications/styles.css'
 import './index.css'
 import { NotificationProvider } from '../store'
 
