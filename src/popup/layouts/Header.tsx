@@ -7,8 +7,7 @@ const Header = () => {
   const navigator = useNavigate()
 
   const handleToWebsite = () => {
-    // TODO
-    // window.open('https://github.com/yunyoujun/image-grabber')
+    window.open('https://www.tuojieyun.com/image-snatcher/website')
   }
 
   return (
@@ -19,11 +18,11 @@ const Header = () => {
       </h1>
       <aside>
         <IconHome size={20} color="#333" onClick={handleToWebsite} />
-        <IconSettings
+        {/* <IconSettings
           size={20}
           color="#333"
           onClick={() => navigator('setting')}
-        />
+        /> */}
       </aside>
     </Wrapper>
   )

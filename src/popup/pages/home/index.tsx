@@ -4,7 +4,6 @@ import ImageList from './List'
 import { useState } from 'react'
 import { getCurrentTab } from '../../../utils/chrome'
 import { useLoading, useNotification } from '../../../store'
-import { isValidDomain } from '../../../utils/url'
 import { ImageInfo, ImageSettingType } from '../../../types'
 import { downloadImagesZip } from '../../../utils/download'
 import Filter from './Filter'
@@ -25,33 +24,40 @@ export default function Home() {
       return
     }
 
-    if (isValidDomain(tab.url!)) {
+    if (!tab.url?.startsWith('http://') && !tab.url?.startsWith('https://')) {
       notification.error('此页面不支持图片抓取，请在普通网页上使用')
       return
     }
 
-    const response = await chrome.tabs.sendMessage(tab.id, {
-      action: 'capture',
-      payload: {
-        settings,
-        maxImages: 100,
-        minSize: 50,
-      },
-    }).finally(() => setLoading(false))
+    try {
+      const response = await chrome.tabs.sendMessage(tab.id, {
+        action: 'capture',
+        payload: {
+          settings,
+          maxImages: 100,
+          minSize: 50,
+        },
+      })
 
-    console.log('抓取结果response：', response)
+      console.log('抓取结果response：', response)
 
-    if (!response || !response.success) {
-      notification.error(response.message)
-      return
+      if (!response || !response.success) {
+        notification.error(response?.message || '抓取失败')
+        return
+      }
+
+      if (!response.images?.length) {
+        notification.error('未找到图片')
+        return
+      }
+
+      setImages(response.images || [])
+    } catch (error) {
+      console.error('Message sending failed:', error)
+      notification.error('无法连接到页面，请刷新页面后重试')
+    } finally {
+      setLoading(false)
     }
-
-    if (!response.images.length) {
-      notification.error('未找到图片')
-      return
-    }
-
-    setImages(response.images || [])
   }
 
   const handleDownload = async (settings: ImageSettingType[]) => {

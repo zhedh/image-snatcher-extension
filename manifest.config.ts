@@ -31,9 +31,9 @@ export default defineManifest({
   ],
   content_scripts: [{
     js: ['src/content/main.tsx'],
-    matches: ['https://*/*'],
+    matches: ['http://*/*', 'https://*/*'],
   }],
-  side_panel: {
-    default_path: 'src/sidepanel/index.html',
-  },
+  // side_panel: {
+  //   default_path: 'src/sidepanel/index.html',
+  // },
 })
